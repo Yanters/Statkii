@@ -19,35 +19,58 @@ void stateCommands(gameSetter& game) {
 			game.setFleet();
 		}
 		if (strcmp(command2, "NEXT_PLAYER") == 0) {
-			game.nextPlayer();
+			char let = 'X';
+			cin >> let;
+			game.nextPlayer(let);
+		}
+		if (strcmp(command2, "BOARD_SIZE") == 0) {
+			game.setBoardSize();
+		}
+		if (strcmp(command2, "INIT_POSITION") == 0) {
+			game.initPosition();
+		}
+		if (strcmp(command2, "REEF") == 0) {
+			game.createReef();
+		}
+		if (strcmp(command2, "SHIP") == 0) {
+			game.addShip();
+		}
+		if (strcmp(command2, "EXTENDED_SHIPS") == 0) {
+			game.extendedShips = 1;
 		}
 	}
 }
 
-void playerCommands(gameSetter& game, int playerIDs){
+void playerCommands(gameSetter& game, int playerIDs) {
 	char command2[commandLength];
 	while (cin >> command2) {
-		if (strcmp(command2, "[playerA]") == 0|| strcmp(command2, "[playerB]") == 0) {
+		if (strcmp(command2, "[playerA]") == 0 || strcmp(command2, "[playerB]") == 0) {
+			game.players[playerIDs - 1].restartAvalibleMoves();
+			game.nextPlayer();
 			break;
 		}
-		if (strcmp(command2, "PLACE_SHIP")==0) {
-			game.players[playerIDs-1].addShip();
+		if (strcmp(command2, "PLACE_SHIP") == 0) {
+			game.players[playerIDs - 1].addShip(game.returnBoard(),0,game.reefs,game.reefsCount);
 		}
 		if (strcmp(command2, "SHOOT") == 0) {
 			game.shoot(playerIDs);
 			game.isThereAWinner();
 		}
+		if (strcmp(command2, "MOVE") == 0) {
+			game.players[playerIDs - 1].moveShip(game.reefs,game.reefsCount,game.returnBoard());
+		}
 		if (strcmp(command2, "WYPISZ") == 0) {
 			game.players[playerIDs - 1].displayShips();
 		}
-
+		if (strcmp(command2, "testtt") == 0) {
+			game.players[playerIDs - 1].testtest(game.returnBoard());
+		}
 	}
 }
 
 
 int main()
 {
-	cout << endl;
 	gameSetter game;
 
 	createPlayer gracz;
@@ -66,10 +89,10 @@ int main()
 			stateCommands(game);
 		}
 		if (strcmp(command, "[playerA]") == 0) {
-			playerCommands(game,1);
+			playerCommands(game, 1);
 		}
 		if (strcmp(command, "[playerB]") == 0) {
-			playerCommands(game,2);
+			playerCommands(game, 2);
 		}
 		if (strcmp(command, "exit") == 0) {
 			return 0;
@@ -87,8 +110,7 @@ int main()
 		}
 
 	}
-	int n;
-	cin >>n;
+
 	return 0;
 }
 
