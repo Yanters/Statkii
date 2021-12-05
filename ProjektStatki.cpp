@@ -38,6 +38,9 @@ void stateCommands(gameSetter& game) {
 		if (strcmp(command2, "EXTENDED_SHIPS") == 0) {
 			game.extendedShips = 1;
 		}
+		if (strcmp(command2, "SAVE") == 0) {
+			game.saveGame();
+		}
 	}
 }
 

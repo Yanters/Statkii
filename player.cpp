@@ -399,6 +399,18 @@ void createPlayer::displayShips() {
 		}
 		cout << " Direction: " << ships[i].direction << " Point Y: " << ships[i].pointY << " Point X: " << ships[i].pointX << " Fragments Alive: " << ships[i].fragmentsAlive <<"Shoot: "<<ships[i].cannonDestroyed<< endl;
 	}
+	cout << endl << "FLEET: ";
+	for (int j = 3; j >= 0; j--) {
+		cout << fleet[j];
+		if (j != 0) {
+			cout << " ";
+		}
+	}
+	cout << endl;
+	cout << fleet[3] << " ";
+	cout << fleet[2] << " ";
+	cout << fleet[1] << " ";
+	cout << fleet[0] << " ";
 	cout << endl;
 }
 
@@ -452,6 +464,16 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		cout << char(34) << ": SHIP MOVED ALREADY";
 		exit(0);
 	}
+
+	/*if (ships[shipID].engineDestroyed = 'Y') {
+		cout << "INVALID OPERATION " << char(34) << "MOVE " << typeID << " ";
+		for (int i = 0; i < 3; i++) {
+			cout << type[i];
+		}
+		cout << " " << turnType;
+		cout << char(34) << ": SHIP'S ENGINE IS DESTROYED";
+		exit(0);
+	}*/
 
 	// o jeden do przodu
 	int forwardY = 0, forwardX = 0;

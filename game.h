@@ -19,6 +19,7 @@ public:
 	void setUpPlayersGameSize();
 	void addShip();
 	void shootExtended(int playersID);
+	void saveGame();
 	char **returnBoard(int printType=0);
 
 	int gameSizeX = 10;

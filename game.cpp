@@ -71,13 +71,14 @@ void gameSetter::displayPlayersInfo() {
 void gameSetter::setFleet() {
 	char playerLetter;
 	cin >> playerLetter;
-	int a1, a2, a3, a4;
-	cin >> a1 >> a2 >> a3 >> a4;
 	int idGracza = int(playerLetter) - 65;
-	players[idGracza].fleet[0] = a4;
-	players[idGracza].fleet[1] = a3;
-	players[idGracza].fleet[2] = a2;
-	players[idGracza].fleet[3] = a1;
+	int fleetSize = 0;
+	for (int i = 3; i >= 0; i--) {
+		cin >> fleetSize;
+		players[idGracza].fleet[i] = fleetSize;
+		players[idGracza].MainFleet[i] = fleetSize;
+
+	}
 	players[idGracza].setUpShips();
 }
 
@@ -170,6 +171,8 @@ void gameSetter::shoot(int playersIDs,int shipID,int fTypeId,char fType[]) {
 				if (players[i].ships[j].direction == 'N') {
 					if (pointY == (players[i].ships[j].pointY + k) && pointX == (players[i].ships[j].pointX) && players[i].ships[j].pieces[k] != 'x') {
 						if (players[i].ships[j].pieces[k] == '!') { players[i].ships[j].cannonDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '%') { players[i].ships[j].engineDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '@') { players[i].ships[j].radarDestroyed = 'Y'; }
 						players[i].ships[j].pieces[k] = 'x';
 						players[i].ships[j].fragmentsAlive--;
 						players[i].isShipAlive(j);
@@ -178,6 +181,8 @@ void gameSetter::shoot(int playersIDs,int shipID,int fTypeId,char fType[]) {
 				if (players[i].ships[j].direction == 'S') {
 					if (pointY == (players[i].ships[j].pointY - k) && pointX == (players[i].ships[j].pointX) && players[i].ships[j].pieces[k] != 'x') {
 						if (players[i].ships[j].pieces[k] == '!') { players[i].ships[j].cannonDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '%') { players[i].ships[j].engineDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '@') { players[i].ships[j].radarDestroyed = 'Y'; }
 						players[i].ships[j].pieces[k] = 'x';
 						players[i].ships[j].fragmentsAlive--;
 						players[i].isShipAlive(j);
@@ -187,6 +192,8 @@ void gameSetter::shoot(int playersIDs,int shipID,int fTypeId,char fType[]) {
 				if (players[i].ships[j].direction == 'W') {
 					if (pointY == (players[i].ships[j].pointY) && pointX == ((players[i].ships[j].pointX) + k) && players[i].ships[j].pieces[k] != 'x') {
 						if (players[i].ships[j].pieces[k] == '!') { players[i].ships[j].cannonDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '%') { players[i].ships[j].engineDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '@') { players[i].ships[j].radarDestroyed = 'Y'; }
 						players[i].ships[j].pieces[k] = 'x';
 						players[i].ships[j].fragmentsAlive--;
 						players[i].isShipAlive(j);
@@ -196,6 +203,8 @@ void gameSetter::shoot(int playersIDs,int shipID,int fTypeId,char fType[]) {
 				if (players[i].ships[j].direction == 'E') {
 					if (pointY == (players[i].ships[j].pointY) && pointX == ((players[i].ships[j].pointX) - k) && players[i].ships[j].pieces[k] != 'x') {
 						if (players[i].ships[j].pieces[k] == '!') { players[i].ships[j].cannonDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '%') { players[i].ships[j].engineDestroyed = 'Y'; }
+						if (players[i].ships[j].pieces[k] == '@') { players[i].ships[j].radarDestroyed = 'Y'; }
 						players[i].ships[j].pieces[k] = 'x';
 						players[i].ships[j].fragmentsAlive--;
 						players[i].isShipAlive(j);
@@ -330,5 +339,56 @@ void gameSetter::shootExtended(int playerIDs) {
 	}
 
 	shoot(playerIDs,shipID,typeID,type);
+
+}
+
+void gameSetter::saveGame() {
+	cout << "[state]" << endl;
+	cout << "BOARD_SIZE " << gameSizeY << " " << gameSizeX<<endl;
+	cout << "NEXT_PLAYER " << char(move+65)<< endl;
+
+	for (int i = 0; i < 2; i++) {
+		cout << "INIT_POSITION " << char(i + 65) << " " << players[i].minRow << " " << players[i].minCol << " " << players[i].maxRow << " " << players[i].maxCol << endl;
+		cout << "SET_FLEET " << char(i + 65) << " ";
+		for (int j = 3; j >= 0; j--) {
+			cout << players[i].MainFleet[j];
+			if (j != 0) {
+				cout << " ";
+			}
+		}
+		cout << endl;
+		for (int j = 3; j >= 0; j--) {
+			for (int k = 0; k < players[i].MainFleet[j]; k++) {
+				for (int o = 0; o < players[i].shipsOwned; o++) {
+					if ((players[i].ships[o].size == (j + 2)) && players[i].ships[o].typeId == k) {
+						cout << "SHIP " << char(i + 65) <<" "<< players[i].ships[o].pointY << " " << players[i].ships[o].pointX << " " << players[i].ships[o].direction << " " << k << " ";
+						for (int q = 0; q < 3; q++) {
+							cout << players[i].ships[o].type[q];
+						}
+						cout << " ";
+						for (int b = 0; b < players[i].ships[o].size; b++) {
+							if (players[i].ships[o].pieces[b] != 'x') {
+								cout << '1';
+							}
+							else {
+								cout << '0';
+							}
+						}
+						break;
+					}
+				}
+				cout << endl;
+			}
+		}
+	}
+
+	if (reefsCount != 0) {
+		for (int i = 0; i < reefsCount;i++)
+		{
+			cout << "REEF " << reefs[i].y << " " << reefs[i].x << endl;
+		}
+	}
+
+	cout << "[state]" << endl;
 
 }

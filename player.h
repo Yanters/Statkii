@@ -31,6 +31,7 @@ public:
 	void restartAvalibleMoves();
 	void restartAvalibleShoots();
 	int fleet[4] = { 4,3,2,1 };
+	int MainFleet[4] = { 4,3,2,1 };
 	int shipsAlive = 0;
 	int shipsOwned = 0;
 	int minRow = 0, maxRow = 9;
