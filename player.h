@@ -11,6 +11,12 @@ struct createShip {
 	int typeId = -1;
 	int fragmentsAlive = 0;
 	int avalibleMoves = 3;
+	int cannonX = -1;
+	int cannonY = -1;
+	int avalibleShoots = 0;
+	char cannonDestroyed = 'N';
+	char radarDestroyed = 'N';
+	char engineDestroyed = 'N';
 };
 
 class createPlayer {
@@ -23,6 +29,7 @@ public:
 	void moveShip(struct cordinates reefs[]=NULL, int reefsCount=0,char **board=NULL);
 	void testtest(char **board);
 	void restartAvalibleMoves();
+	void restartAvalibleShoots();
 	int fleet[4] = { 4,3,2,1 };
 	int shipsAlive = 0;
 	int shipsOwned = 0;

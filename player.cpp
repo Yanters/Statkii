@@ -153,18 +153,23 @@ void createPlayer::addShip(char **board,int addType, struct cordinates reefs[], 
 
 
 	// YYYYYYYYY   XXXXXX
+	int cannonY=pointY, cannonX=pointX;
 	int maxPointX = pointX, maxPointY = pointY;
 	if (direction == 'N') {
 		maxPointY = pointY + size - 1;
+		cannonY++;
 	}
 	if (direction == 'S') {
 		maxPointY = pointY - size + 1;
+		cannonY--;
 	}
 	if (direction == 'W') {
 		maxPointX = pointX + size - 1;
+		cannonX++;
 	}
 	if (direction == 'E') {
 		maxPointX = pointX - size + 1;
+		cannonX--;
 	}
 
 
@@ -325,7 +330,6 @@ void createPlayer::addShip(char **board,int addType, struct cordinates reefs[], 
 	ship.typeId = typeID;
 	ship.direction = direction;
 	ship.fragmentsAlive = aliveParts;
-	delete[] stateFragments;
 	//Deleting Board
 	for (int i = 0; i < gameSizeY; ++i) {
 		delete[] board[i];
@@ -334,10 +338,49 @@ void createPlayer::addShip(char **board,int addType, struct cordinates reefs[], 
 
 	if (strcmp(type, "CAR") == 0) {
 		ship.avalibleMoves = 2;
+		ship.avalibleShoots = -1;
 	}
 	else {
 		ship.avalibleMoves = 3;
 	}
+
+	if (size > 2) {
+		ship.cannonX = cannonX;
+		ship.cannonY = cannonY;
+		if ( addType==1 && stateFragments[1] == '1') {
+			ship.avalibleShoots = size;
+			ship.cannonDestroyed = 'N';
+		}
+		else if(addType == 1 && stateFragments[1] == '0') {
+			ship.avalibleShoots = 0;
+			ship.cannonDestroyed = 'Y';
+		}
+		else {
+			ship.avalibleShoots = size;
+			ship.cannonDestroyed = 'N';
+		}
+	}
+	else {
+		ship.cannonDestroyed = 'Y';
+		ship.avalibleShoots = 0;
+		ship.cannonX = -1;
+		ship.cannonY = -1;
+	}
+	if(stateFragments[size-1]=='0'){
+		ship.engineDestroyed = 'Y';
+	}
+	else
+	{
+		ship.engineDestroyed = 'N';
+	}
+	if (stateFragments[0] == '0') {
+		ship.radarDestroyed = 'Y';
+	}
+	else
+	{
+		ship.radarDestroyed = 'N';
+	}
+	delete[] stateFragments;
 
 	shipsAlive++;
 	shipsOwned++;
@@ -354,7 +397,7 @@ void createPlayer::displayShips() {
 		for (int k = 0; k < ships[i].size; k++) {
 			cout << ships[i].pieces[k];
 		}
-		cout << " Direction: " << ships[i].direction << " Point Y: " << ships[i].pointY << " Point X: " << ships[i].pointX << " Fragments Alive: " << ships[i].fragmentsAlive << endl;
+		cout << " Direction: " << ships[i].direction << " Point Y: " << ships[i].pointY << " Point X: " << ships[i].pointX << " Fragments Alive: " << ships[i].fragmentsAlive <<"Shoot: "<<ships[i].cannonDestroyed<< endl;
 	}
 	cout << endl;
 }
@@ -640,6 +683,17 @@ void createPlayer::restartAvalibleMoves() {
 		}
 		else {
 			ships[i].avalibleMoves = 3;
+		}
+	}
+}
+
+void createPlayer::restartAvalibleShoots() {
+	for (int i = 0; i < shipsOwned; i++) {
+		if (ships[i].size > 2 && ships[i].cannonDestroyed != 1) {
+			ships[i].avalibleShoots = ships[i].size;
+			if (strcmp(ships[i].type, "CAR") == 0) {
+				ships[i].avalibleShoots = -1;
+			}
 		}
 	}
 }

@@ -11,13 +11,14 @@ public:
 	void setFleet();
 	void nextPlayer(char playerLetter='X');
 	void isThereAWinner();
-	void shoot(int idGracza);
+	void shoot(int idGracza,int shipID=0, int fTypeId=0, char fType[]=NULL);
 	void setBoardSize();
 	void initPosition();
 	void createReef();
 	void setUpReefs();
 	void setUpPlayersGameSize();
 	void addShip();
+	void shootExtended(int playersID);
 	char **returnBoard(int printType=0);
 
 	int gameSizeX = 10;

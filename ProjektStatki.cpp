@@ -46,14 +46,24 @@ void playerCommands(gameSetter& game, int playerIDs) {
 	while (cin >> command2) {
 		if (strcmp(command2, "[playerA]") == 0 || strcmp(command2, "[playerB]") == 0) {
 			game.players[playerIDs - 1].restartAvalibleMoves();
-			game.nextPlayer();
+			game.players[playerIDs - 1].restartAvalibleShoots();
+
+			if (game.move == (playerIDs - 1))
+			{
+				game.nextPlayer();
+			}
 			break;
 		}
 		if (strcmp(command2, "PLACE_SHIP") == 0) {
 			game.players[playerIDs - 1].addShip(game.returnBoard(),0,game.reefs,game.reefsCount);
 		}
 		if (strcmp(command2, "SHOOT") == 0) {
-			game.shoot(playerIDs);
+			if(game.extendedShips!=1){
+				game.shoot(playerIDs);
+			}
+			else {
+				game.shootExtended(playerIDs);
+			}
 			game.isThereAWinner();
 		}
 		if (strcmp(command2, "MOVE") == 0) {
