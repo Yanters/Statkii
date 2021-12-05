@@ -30,6 +30,8 @@ public:
 	void testtest(char **board);
 	void restartAvalibleMoves();
 	void restartAvalibleShoots();
+	void playerVisionMap( char **boardAll=NULL);
+	void addSpyPlane();
 	int fleet[4] = { 4,3,2,1 };
 	int MainFleet[4] = { 4,3,2,1 };
 	int shipsAlive = 0;
@@ -38,6 +40,8 @@ public:
 	int minCol = 0, maxCol = 9;
 	int gameSizeY = 21;
 	int gameSizeX = 10;
+	int spyPlanesCount = 0;
 
+	cordinates *spyPlanes = new cordinates[5];
 	createShip *ships = new createShip[10];
 };

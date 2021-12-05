@@ -41,6 +41,10 @@ void stateCommands(gameSetter& game) {
 		if (strcmp(command2, "SAVE") == 0) {
 			game.saveGame();
 		}
+		if (strcmp(command2, "SET_AI_PLAYER") == 0) {
+			game.setAIPlayer();
+		}
+		
 	}
 }
 
@@ -74,6 +78,12 @@ void playerCommands(gameSetter& game, int playerIDs) {
 		}
 		if (strcmp(command2, "WYPISZ") == 0) {
 			game.players[playerIDs - 1].displayShips();
+		}
+		if (strcmp(command2, "PRINT") == 0) {
+			game.players[playerIDs - 1].playerVisionMap(game.returnBoard());
+		}
+		if (strcmp(command2, "SPY") == 0) {
+			game.players[playerIDs - 1].addSpyPlane();
 		}
 		if (strcmp(command2, "testtt") == 0) {
 			game.players[playerIDs - 1].testtest(game.returnBoard());

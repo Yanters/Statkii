@@ -227,6 +227,13 @@ void gameSetter::setUpReefs() {
 	reefs = new cordinates[gameSizeX*gameSizeY];
 }
 
+void gameSetter::setAIPlayer() {
+	char playerLetter = 'X';
+	cin >> playerLetter;
+	cout << '?';
+	exit(0);
+}
+
 
 void gameSetter::setBoardSize() {
 	int boardY = 0, boardX = 0;

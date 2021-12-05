@@ -34,6 +34,10 @@ void toClose(int addType, int pointY, int pointX, char direction, int typeID, ch
 	exit(0);
 }
 
+double calculateDistanceVision(int cannonY, int cannonX, int shootY, int shootX) {
+	return sqrt(pow(abs(cannonY - shootY), 2) + pow(abs(cannonX - shootX), 2));
+}
+
 //struct createReefs reefs[],
 void createPlayer::addShip(char **board,int addType, struct cordinates reefs[], int reefsCount, char playerLetter) {
 
@@ -338,7 +342,7 @@ void createPlayer::addShip(char **board,int addType, struct cordinates reefs[], 
 
 	if (strcmp(type, "CAR") == 0) {
 		ship.avalibleMoves = 2;
-		ship.avalibleShoots = -1;
+		//ship.avalibleShoots = -1;
 	}
 	else {
 		ship.avalibleMoves = 3;
@@ -366,19 +370,13 @@ void createPlayer::addShip(char **board,int addType, struct cordinates reefs[], 
 		ship.cannonX = -1;
 		ship.cannonY = -1;
 	}
-	if(stateFragments[size-1]=='0'){
-		ship.engineDestroyed = 'Y';
-	}
-	else
-	{
-		ship.engineDestroyed = 'N';
-	}
-	if (stateFragments[0] == '0') {
-		ship.radarDestroyed = 'Y';
-	}
-	else
-	{
-		ship.radarDestroyed = 'N';
+	if (addType == 1) {
+		if (stateFragments[size - 1] == '0') {
+			ship.engineDestroyed = 'Y';
+		}
+		if (stateFragments[0] == '0') {
+			ship.radarDestroyed = 'Y';
+		}
 	}
 	delete[] stateFragments;
 
@@ -429,6 +427,8 @@ void createPlayer::setUpShips() {
 	ships = new createShip[shipsSize];
 }
 
+
+
 void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **board) {
 	//cout << endl << "Funkcja" << endl;
 	char type[4] = { 'X','X','X' };
@@ -465,7 +465,7 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		exit(0);
 	}
 
-	/*if (ships[shipID].engineDestroyed = 'Y') {
+	if (ships[shipID].engineDestroyed == 'Y') {
 		cout << "INVALID OPERATION " << char(34) << "MOVE " << typeID << " ";
 		for (int i = 0; i < 3; i++) {
 			cout << type[i];
@@ -473,7 +473,7 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		cout << " " << turnType;
 		cout << char(34) << ": SHIP'S ENGINE IS DESTROYED";
 		exit(0);
-	}*/
+	}
 
 	// o jeden do przodu
 	int forwardY = 0, forwardX = 0;
@@ -713,9 +713,9 @@ void createPlayer::restartAvalibleShoots() {
 	for (int i = 0; i < shipsOwned; i++) {
 		if (ships[i].size > 2 && ships[i].cannonDestroyed != 1) {
 			ships[i].avalibleShoots = ships[i].size;
-			if (strcmp(ships[i].type, "CAR") == 0) {
+			/*if (strcmp(ships[i].type, "CAR") == 0) {
 				ships[i].avalibleShoots = -1;
-			}
+			}*/
 		}
 	}
 }
@@ -727,4 +727,107 @@ void createPlayer::testtest(char **board) {
 		}
 		cout << endl;
 	}
+}
+
+void createPlayer::addSpyPlane() {
+	int carID = 0,pointY=0,pointX=0;
+	cin >> carID >> pointY >> pointX;
+
+
+	int shipID = -1;
+	
+	for (int i = 0; i < shipsOwned; i++) {
+		if (ships[i].typeId != carID) continue;
+		
+		if (strcmp(ships[i].type, "CAR") == 0) {
+			shipID = i;
+			break;
+		}
+	}
+
+	cordinates spyPlane;
+	spyPlane.y = pointY;
+	spyPlane.x = pointX;
+	spyPlanes[spyPlanesCount] = spyPlane;
+	ships[shipID].avalibleShoots--;
+	spyPlanesCount++;
+}
+
+
+void createPlayer::playerVisionMap(char **boardAll) {
+	int visionOption;
+	cin >> visionOption;
+	//Creating Board
+	char **foggyBoard = new char*[gameSizeY];
+	for (int i = 0; i < gameSizeY; ++i) {
+		foggyBoard[i] = new char[gameSizeX];
+	}
+	//Fogging board
+	for (int i = 0; i < gameSizeY; i++) {
+		for (int j = 0; j < gameSizeX; j++) {
+			foggyBoard[i][j] = '?';
+		}
+	}
+	for (int i = 0; i < shipsOwned; i++) {
+		if (ships[i].radarDestroyed = 'N') {
+			for (int m = 0; m < gameSizeY; m++) {
+				for (int n = 0; n < gameSizeX; n++) {
+					if (ships[i].size>= calculateDistanceVision(ships[i].pointY, ships[i].pointX, m, n)) {
+						foggyBoard[m][n] = 'V';
+					}
+				}
+			}
+		}
+		else {
+			for (int m = 0; m < gameSizeY; m++) {
+				for (int n = 0; n < gameSizeX; n++) {
+					if (1 >= calculateDistanceVision(ships[i].pointY, ships[i].pointX, m, n)) {
+						foggyBoard[m][n] = 'V';
+					}
+				}
+			}
+		}
+		
+	}
+	for (int i = 0; i < spyPlanesCount; i++) {
+		for (int m = 0; m < gameSizeY; m++) {
+			for (int n = 0; n < gameSizeX; n++) {
+				if (2 > calculateDistanceVision(spyPlanes[i].y, spyPlanes[i].x, m, n)) {
+					foggyBoard[m][n] = 'V';
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < gameSizeY; i++) {
+		for (int j = 0; j < gameSizeX; j++) {
+			if (foggyBoard[i][j] == 'V') {
+				foggyBoard[i][j] = boardAll[i][j];
+			}
+		}
+	}
+
+	//Display
+	if (visionOption == 1) {
+		cout << "  ";
+		for (int i = 0; i < gameSizeX; i++) {
+			cout << i;
+		}
+		cout << endl;
+	}
+	for (int i = 0; i < gameSizeY; i++) {
+		if (visionOption == 1) {
+			if (i < 10) {
+				cout << '0' << i;
+			}
+			else {
+				cout << i;
+			}
+		}
+		for (int j = 0; j < gameSizeX; j++) {
+			cout << foggyBoard[i][j];
+		}
+		cout << endl;
+	}
+
 }

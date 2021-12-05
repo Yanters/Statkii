@@ -20,6 +20,7 @@ public:
 	void addShip();
 	void shootExtended(int playersID);
 	void saveGame();
+	void setAIPlayer();
 	char **returnBoard(int printType=0);
 
 	int gameSizeX = 10;
