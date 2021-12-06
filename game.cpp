@@ -7,12 +7,12 @@ using namespace std;
 double calculateDistance(int cannonY, int cannonX, int shootY, int shootX) {
 	return sqrt(pow(abs(cannonY - shootY), 2) + pow(abs(cannonX - shootX), 2));
 }
-
 void tooFar(int typeID, char type[], int pointY,int pointX) {
 	cout << "INVALID OPERATION " << char(34) << "SHOOT " << typeID << " ";
-	for (int i = 0; i < 3; i++) {
+	/*for (int i = 0; i < 3; i++) {
 		cout << type[i];
-	}
+	}*/
+	cout << type;
 	cout << " " << pointY << " " << pointX;
 	cout << char(34) << ": SHOOTING TOO FAR";
 	exit(0);
@@ -142,9 +142,10 @@ void gameSetter::shoot(int playersIDs,int shipID,int fTypeId,char fType[]) {
 
 	if (extendedShips == 1 && players[playersIDs - 1].ships[shipID].cannonDestroyed == 'Y') {
 		cout << "INVALID OPERATION " << char(34) << "SHOOT " << fTypeId << " ";
-		for (int i = 0; i < 3; i++) {
+		/*for (int i = 0; i < 3; i++) {
 			cout << fType[i];
-		}
+		}*/
+		cout << fType;
 		cout << " " << pointY << " " << pointX;
 		cout << char(34) << ": SHIP CANNOT SHOOT";
 		exit(0);
@@ -153,13 +154,16 @@ void gameSetter::shoot(int playersIDs,int shipID,int fTypeId,char fType[]) {
 	//cout << endl << players[playersIDs - 1].ships[shipID].avalibleShoots << endl;
 	if (players[playersIDs - 1].ships[shipID].avalibleShoots == 0) {
 		cout << "INVALID OPERATION " << char(34) << "SHOOT " << fTypeId << " ";
-		for (int i = 0; i < 3; i++) {
+		/*for (int i = 0; i < 3; i++) {
 			cout << fType[i];
-		}
+		}*/
+		cout << fType;
 		cout << " " << pointY << " " << pointX;
 		cout << char(34) << ": TOO MANY SHOOTS";
 		exit(0);
 	}
+	//cout << endl << "Cannon: " << players[playersIDs - 1].ships[shipID].cannonY << " " << players[playersIDs - 1].ships[shipID].cannonY << " Cel: " << pointY << " " << pointX << " Dystans: " << calculateDistance(players[playersIDs - 1].ships[shipID].cannonY, players[playersIDs - 1].ships[shipID].cannonX, pointY, pointX) << endl;
+	//cout << calculateDistance(players[playersIDs - 1].ships[shipID].cannonY, players[playersIDs - 1].ships[shipID].cannonX, pointY, pointX) << endl;
 	if (extendedShips == 1 && players[playersIDs - 1].ships[shipID].size < calculateDistance(players[playersIDs - 1].ships[shipID].cannonY, players[playersIDs - 1].ships[shipID].cannonX, pointY,pointX)) {
 		//int typeID, char type[], int pointY,int pointX
 		tooFar(fTypeId, fType, pointY, pointX);
@@ -331,15 +335,20 @@ void gameSetter::shootExtended(int playerIDs) {
 
 
 	int shipID = -1;
-	int sameType = 0;
+	//int sameType = 0;
 	for (int i = 0; i < players[playerIDs-1].shipsOwned; i++) {
 		if (players[playerIDs-1].ships[i].typeId != typeID) continue;
-		sameType = 0;
-		for (int j = 0; j < 3; j++) {
+		//sameType = 0;
+		/*for (int j = 0; j < 3; j++) {
 			if (players[playerIDs-1].ships[i].type[j] == type[j]) sameType++;
 		}
 
 		if (sameType == 3) {
+			shipID = i;
+			break;
+		}
+		*/
+		if (strcmp(players[playerIDs - 1].ships[i].type, type) == 0 && players[playerIDs - 1].ships[i].typeId == typeID) {
 			shipID = i;
 			break;
 		}
@@ -369,9 +378,10 @@ void gameSetter::saveGame() {
 				for (int o = 0; o < players[i].shipsOwned; o++) {
 					if ((players[i].ships[o].size == (j + 2)) && players[i].ships[o].typeId == k) {
 						cout << "SHIP " << char(i + 65) <<" "<< players[i].ships[o].pointY << " " << players[i].ships[o].pointX << " " << players[i].ships[o].direction << " " << k << " ";
-						for (int q = 0; q < 3; q++) {
+						/*for (int q = 0; q < 3; q++) {
 							cout << players[i].ships[o].type[q];
-						}
+						}*/
+						cout << players[i].ships[o].type;
 						cout << " ";
 						for (int b = 0; b < players[i].ships[o].size; b++) {
 							if (players[i].ships[o].pieces[b] != 'x') {

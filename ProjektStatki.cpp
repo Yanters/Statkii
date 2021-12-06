@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include "player.h"
 #include "game.h"
+#include "string.h"
 
 #define commandLength 20
 
@@ -44,7 +45,7 @@ void stateCommands(gameSetter& game) {
 		if (strcmp(command2, "SET_AI_PLAYER") == 0) {
 			game.setAIPlayer();
 		}
-		
+
 	}
 }
 
@@ -80,14 +81,14 @@ void playerCommands(gameSetter& game, int playerIDs) {
 			game.players[playerIDs - 1].displayShips();
 		}
 		if (strcmp(command2, "PRINT") == 0) {
-			game.players[playerIDs - 1].playerVisionMap(game.returnBoard());
+			int visionOption;
+			cin >> visionOption;
+			game.players[playerIDs - 1].playerVisionMap(game.returnBoard(visionOption),visionOption);
 		}
 		if (strcmp(command2, "SPY") == 0) {
 			game.players[playerIDs - 1].addSpyPlane();
 		}
-		if (strcmp(command2, "testtt") == 0) {
-			game.players[playerIDs - 1].testtest(game.returnBoard());
-		}
+		
 	}
 }
 

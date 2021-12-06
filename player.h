@@ -27,10 +27,9 @@ public:
 	void isShipAlive(int number);
 	void setUpShips();
 	void moveShip(struct cordinates reefs[]=NULL, int reefsCount=0,char **board=NULL);
-	void testtest(char **board);
 	void restartAvalibleMoves();
 	void restartAvalibleShoots();
-	void playerVisionMap( char **boardAll=NULL);
+	void playerVisionMap( char **boardAll=NULL,int visionOption=0);
 	void addSpyPlane();
 	int fleet[4] = { 4,3,2,1 };
 	int MainFleet[4] = { 4,3,2,1 };
