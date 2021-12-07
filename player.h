@@ -42,6 +42,16 @@ public:
 	int gameSizeX = 10;
 	int spyPlanesCount = 0;
 
+	int AIseed = 0;
+	int AIPlayer = 0;
+	int AIError = 0;
+	int AIShipsOwned = 0;
+	void restartShips(struct createShip shipsRestart[]);
+
+	//AI
+	char AIShipType[3] = { 'X','X','X' };
+
+
 	cordinates *spyPlanes = new cordinates[5];
 	createShip *ships = new createShip[10];
 };

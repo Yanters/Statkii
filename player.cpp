@@ -39,14 +39,12 @@ double calculateDistanceVision(int cannonY, int cannonX, int shootY, int shootX)
 }
 
 void createPlayer::addShip(char **board, int addType, struct cordinates reefs[], int reefsCount, char playerLetter) {
-
-
 	char type[4] = { 'X','X','X' };
 	int  size = 3, pointX = 0, pointY = 0, typeID = -1;
 	char direction;
-	
+	if(addType!=3){
 	cin >> pointY >> pointX >> direction >> typeID >> type;
-
+	}
 	
 
 	if (strcmp(type, "CAR") == 0) {
@@ -554,6 +552,25 @@ void createPlayer::restartAvalibleMoves() {
 		}
 	}
 }
+void createPlayer::restartShips(struct createShip shipsRestart[]) {
+	for (int i = (shipsOwned - 1); i < (shipsOwned - 1 + AIShipsOwned); i++) {
+		shipsRestart[i].size = 3;
+		shipsRestart[i].pointX = -1;
+		shipsRestart[i].pointY = -1;
+		shipsRestart[i].direction = '?';
+		shipsRestart[i].typeId = -1;
+		shipsRestart[i].fragmentsAlive = 0;
+		shipsRestart[i].avalibleMoves = 3;
+		shipsRestart[i].cannonX = -1;
+		shipsRestart[i].cannonY = -1;
+		shipsRestart[i].avalibleShoots = 0;
+		shipsRestart[i].avaliblePlanes = 0;
+		shipsRestart[i].cannonDestroyed = 'N';
+		shipsRestart[i].radarDestroyed = 'N';
+		shipsRestart[i].engineDestroyed = 'N';
+	}
+}
+
 
 void createPlayer::restartAvalibleShoots() {
 	for (int i = 0; i < shipsOwned; i++) {
@@ -680,3 +697,4 @@ void createPlayer::playerVisionMap(char **boardAll,int visionOption) {
 	}
 
 }
+

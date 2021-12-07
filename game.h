@@ -20,7 +20,7 @@ public:
 	void addShip();
 	void shootExtended(int playersID);
 	void saveGame();
-	void setAIPlayer();
+	void setSrand();
 	char **returnBoard(int printType=0);
 
 	int gameSizeX = 10;
@@ -28,6 +28,12 @@ public:
 	int move = 0;
 	int reefsCount = 0;
 	int extendedShips = 0;
+	
+	char AIPlayerGame = 'X';
+	int AIseed = 0;
+	void AIAllLogic();
+	void AIsetShips();
+	void setAIPlayer();
 
 	cordinates *reefs = new cordinates[210];
 	createPlayer players[2];

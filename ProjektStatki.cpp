@@ -42,6 +42,9 @@ void stateCommands(gameSetter& game) {
 		if (strcmp(command2, "SAVE") == 0) {
 			game.saveGame();
 		}
+		if (strcmp(command2, "SRAND") == 0) {
+			game.setSrand();
+		}
 		if (strcmp(command2, "SET_AI_PLAYER") == 0) {
 			game.setAIPlayer();
 		}
@@ -50,6 +53,9 @@ void stateCommands(gameSetter& game) {
 }
 
 void playerCommands(gameSetter& game, int playerIDs) {
+	if (game.players[playerIDs - 1].AIPlayer == 1) {
+		game.AIAllLogic();
+	}
 	char command2[commandLength];
 	while (cin >> command2) {
 		if (strcmp(command2, "[playerA]") == 0 || strcmp(command2, "[playerB]") == 0) {

@@ -1,5 +1,8 @@
 #include <iostream>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include<time.h>
 #include "game.h"
 
 using namespace std;
@@ -233,10 +236,19 @@ void gameSetter::setUpReefs() {
 void gameSetter::setAIPlayer() {
 	char playerLetter = 'X';
 	cin >> playerLetter;
-	cout << '?';
-	exit(0);
+	AIPlayerGame = playerLetter;
+	players[int(playerLetter) - 65].AIseed = AIseed;
+	//cout << "SEED " << players[int(playerLetter) - 65].AIseed << endl;
+	players[int(playerLetter) - 65].AIPlayer = 1;
+	//exit(0);
 }
 
+void gameSetter::setSrand() {
+	int seed;
+	cin >> seed;
+	srand(seed);
+	AIseed = seed;
+}
 
 void gameSetter::setBoardSize() {
 	int boardY = 0, boardX = 0;
@@ -404,7 +416,79 @@ void gameSetter::saveGame() {
 			cout << "REEF " << reefs[i].y << " " << reefs[i].x << endl;
 		}
 	}
-
+	if (extendedShips == 1) {
+		cout << "EXTENDED_SHIPS" << endl;
+	}
+	if (AIseed != 0) {
+		cout << "SRAND "<<AIseed++ << endl;
+	}
 	cout << "[state]" << endl;
 
+}
+
+
+///AIAIAIAIAIIAAIIAIA
+
+void gameSetter::AIsetShips() {
+
+	//random fake number
+	cout << rand()<<endl;
+	for (int i = 3; i >= 0; i--) {
+		//char shipType[3] = { 'X','X','X' };
+		for (int j = 0; j < players[int(AIPlayerGame)-65].fleet[i]; j++) {
+			switch (i)
+			{
+			case 3:
+				players[int(AIPlayerGame) - 65].AIShipType[0] = 'C';
+				players[int(AIPlayerGame) - 65].AIShipType[1] = 'A';
+				players[int(AIPlayerGame) - 65].AIShipType[2] = 'R';
+				break;
+			case 2:
+				players[int(AIPlayerGame) - 65].AIShipType[0] = 'B';
+				players[int(AIPlayerGame) - 65].AIShipType[1] = 'A';
+				players[int(AIPlayerGame) - 65].AIShipType[2] = 'T';
+				break;
+			case 1:
+				players[int(AIPlayerGame) - 65].AIShipType[0] = 'C';
+				players[int(AIPlayerGame) - 65].AIShipType[1] = 'R';
+				players[int(AIPlayerGame) - 65].AIShipType[2] = 'U';
+				break;
+			case 0:
+				players[int(AIPlayerGame) - 65].AIShipType[0] = 'D';
+				players[int(AIPlayerGame) - 65].AIShipType[1] = 'E';
+				players[int(AIPlayerGame) - 65].AIShipType[2] = 'S';
+				break;
+			default:
+				cout << "ERROR" << endl;
+				break;
+			}
+			//place Ship Type 3
+			do {
+				players[int(AIPlayerGame) - 65].AIError = 0;
+				players[int(AIPlayerGame) - 65].addShip(returnBoard(), 3, reefs, reefsCount);
+
+			} while (players[int(AIPlayerGame) - 65].AIError == 1);
+
+		}
+
+
+	}
+
+}
+
+
+
+void gameSetter::AIAllLogic() {
+
+	int shipsToPlace = 0;
+	for (int i = 0; i < 4; i++) {
+		shipsToPlace += players[int(AIPlayerGame) - 65].fleet[i];
+	}
+
+	if (shipsToPlace != 0) {
+		AIsetShips();
+	}
+	else {
+
+	}
 }
