@@ -14,6 +14,7 @@ struct createShip {
 	int cannonX = -1;
 	int cannonY = -1;
 	int avalibleShoots = 0;
+	int avaliblePlanes = 0;
 	char cannonDestroyed = 'N';
 	char radarDestroyed = 'N';
 	char engineDestroyed = 'N';

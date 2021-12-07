@@ -47,6 +47,8 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 	
 	cin >> pointY >> pointX >> direction >> typeID >> type;
 
+	
+
 	if (strcmp(type, "CAR") == 0) {
 		size = 5;
 	}
@@ -66,8 +68,13 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 		cin >> stateFragments;
 	}
 
+	int sameType = 0;
 	for (int i = 0; i < shipsOwned; i++) {
-		if (strcmp(ships[i].type, type) == 0 && ships[i].typeId == typeID) {
+		sameType = 0;
+		for (int j = 0; j < 3; j++) {
+			if(ships[i].type[j]==type[j])sameType++;
+		}
+		if (sameType == 3 && ships[i].typeId == typeID) {
 			cout << "INVALID OPERATION " << char(34);
 			if (addType == 0) {
 				cout << "PLACE_SHIP ";
@@ -140,7 +147,7 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 		exit(0);
 	}
 	//pointX > maxRow || pointX < minRow || pointY>10 || pointY < 0||maxPointX > maxRow || maxPointX < minRow || maxPointY>10 || maxPointY < 0
-	if (addType == 0 && (pointY<minRow || pointY>maxRow || maxPointY<minRow || maxPointY>maxRow)) {
+	if (addType == 0 && (pointY<minRow || pointY>maxRow || maxPointY<minRow || maxPointY>maxRow|| pointX<minCol || pointX>maxCol || maxPointX<minCol || maxPointX>maxCol)) {
 		//INVALID OPERATION "PLACE_SHIP 9 6 N 0 CAR": NOT IN STARTING POSITION
 		cout << "INVALID OPERATION " << char(34) << "PLACE_SHIP " << pointY << " " << pointX << " " << direction << " " << typeID << " ";
 		/*for (int i = 0; i < 3; i++) {
@@ -172,7 +179,7 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 			offsetX = -i;
 		}
 
-		if (((((pointY + offsetY) >= 0) && ((pointY + offsetY) <= 20)) && (((pointX + offsetX) >= 0) && ((pointX + offsetX) <= 9))) && (board[pointY + offsetY][pointX + offsetX] != ' ')) {
+		if (((((pointY + offsetY) >= 0) && ((pointY + offsetY) <= gameSizeY-1)) && (((pointX + offsetX) >= 0) && ((pointX + offsetX) <= gameSizeX - 1))) && (board[pointY + offsetY][pointX + offsetX] != ' ')) {
 			if (board[pointY + offsetY][pointX + offsetX] == '#')
 			{
 				cout << "INVALID OPERATION " << char(34);
@@ -203,17 +210,17 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 			toClose(addType, pointY, pointX, direction, typeID, type, size, stateFragments, playerLetter);
 		}
 
-		if (((((pointY + offsetY + 1) >= 0) && ((pointY + offsetY + 1) <= 20)) && (((pointX + offsetX) >= 0) && ((pointX + offsetX) <= 9))) && (board[pointY + offsetY + 1][pointX + offsetX] != ' ' && board[pointY + offsetY + 1][pointX + offsetX] != '#')) {
+		if (((((pointY + offsetY + 1) >= 0) && ((pointY + offsetY + 1) <= gameSizeY - 1)) && (((pointX + offsetX) >= 0) && ((pointX + offsetX) <= gameSizeX - 1))) && (board[pointY + offsetY + 1][pointX + offsetX] != ' ' && board[pointY + offsetY + 1][pointX + offsetX] != '#')) {
 			toClose(addType, pointY, pointX, direction, typeID, type, size, stateFragments, playerLetter);
 		}
 
-		if (((((pointY + offsetY - 1) >= 0) && ((pointY + offsetY - 1) <= 20)) && (((pointX + offsetX) >= 0) && ((pointX + offsetX) <= 9))) && (board[pointY + offsetY - 1][pointX + offsetX] != ' '&&board[pointY + offsetY - 1][pointX + offsetX] != '#')) {
+		if (((((pointY + offsetY - 1) >= 0) && ((pointY + offsetY - 1) <= gameSizeY - 1)) && (((pointX + offsetX) >= 0) && ((pointX + offsetX) <= gameSizeX - 1))) && (board[pointY + offsetY - 1][pointX + offsetX] != ' '&&board[pointY + offsetY - 1][pointX + offsetX] != '#')) {
 			toClose(addType, pointY, pointX, direction, typeID, type, size, stateFragments, playerLetter);
 		}
-		if (((((pointY + offsetY) >= 0) && ((pointY + offsetY) <= 20)) && (((pointX + offsetX + 1) >= 0) && ((pointX + offsetX + 1) <= 9))) && (board[pointY + offsetY][pointX + offsetX + 1] != ' '&&board[pointY + offsetY][pointX + offsetX + 1] != '#')) {
+		if (((((pointY + offsetY) >= 0) && ((pointY + offsetY) <= gameSizeY - 1)) && (((pointX + offsetX + 1) >= 0) && ((pointX + offsetX + 1) <= gameSizeX - 1))) && (board[pointY + offsetY][pointX + offsetX + 1] != ' '&&board[pointY + offsetY][pointX + offsetX + 1] != '#')) {
 			toClose(addType, pointY, pointX, direction, typeID, type, size, stateFragments, playerLetter);
 		}
-		if (((((pointY + offsetY) >= 0) && ((pointY + offsetY) <= 20)) && (((pointX + offsetX - 1) >= 0) && ((pointX + offsetX - 1) <= 9))) && (board[pointY + offsetY][pointX + offsetX - 1] != ' ' && board[pointY + offsetY][pointX + offsetX - 1] != '#')) {
+		if (((((pointY + offsetY) >= 0) && ((pointY + offsetY) <= gameSizeY - 1)) && (((pointX + offsetX - 1) >= 0) && ((pointX + offsetX - 1) <= gameSizeX - 1))) && (board[pointY + offsetY][pointX + offsetX - 1] != ' ' && board[pointY + offsetY][pointX + offsetX - 1] != '#')) {
 			toClose(addType, pointY, pointX, direction, typeID, type, size, stateFragments, playerLetter);
 		}
 	}
@@ -269,7 +276,7 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 
 	if (strcmp(type, "CAR") == 0) {
 		ship.avalibleMoves = 2;
-		//ship.avalibleShoots = -1;
+		ship.avaliblePlanes = size;
 	}
 	else {
 		ship.avalibleMoves = 3;
@@ -357,8 +364,13 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 
 
 	int shipID = -1;
+	int sameType = 0;
 	for (int i = 0; i < shipsOwned; i++) {
-		if (ships[i].typeId == typeID && strcmp(ships[i].type, type) == 0) {
+		sameType = 0;
+		for (int j = 0; j < 3; j++) {
+			if (ships[i].type[j]==type[j])sameType++;
+		}
+		if (ships[i].typeId == typeID && sameType == 3) {
 			shipID = i;
 			break;
 		}
@@ -382,7 +394,7 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 			cout << type[i];
 		}
 		cout << " " << turnType;
-		cout << char(34) << ": SHIP'S ENGINE IS DESTROYED";
+		cout << char(34) << ": SHIP CANNOT MOVE";
 		exit(0);
 	}
 
@@ -566,11 +578,28 @@ void createPlayer::addSpyPlane() {
 		}
 	}
 
+	if (ships[shipID].cannonDestroyed == 'Y') {
+		cout << "INVALID OPERATION " << char(34);
+		cout << "SPY ";
+		cout << carID << " " << pointY << " " << pointX;
+		cout << char(34) << ": CANNOT SEND PLANE";
+		exit(0);
+	}
+
+	if (ships[shipID].avaliblePlanes == 0) {
+		cout << "INVALID OPERATION " << char(34);
+		cout << "SPY ";
+		cout << carID << " " << pointY << " " << pointX;
+		cout << char(34) << ": ALL PLANES SENT";
+		exit(0);
+	}
+
 	cordinates spyPlane;
 	spyPlane.y = pointY;
 	spyPlane.x = pointX;
 	spyPlanes[spyPlanesCount] = spyPlane;
 	ships[shipID].avalibleShoots--;
+	ships[shipID].avaliblePlanes--;
 	spyPlanesCount++;
 }
 
