@@ -53,26 +53,29 @@ void stateCommands(gameSetter& game) {
 }
 
 void playerCommands(gameSetter& game, int playerIDs) {
-	if (game.players[playerIDs - 1].AIPlayer == 1) {
-		game.AIAllLogic();
-	}
 	char command2[commandLength];
 	while (cin >> command2) {
 		if (strcmp(command2, "[playerA]") == 0 || strcmp(command2, "[playerB]") == 0) {
 			game.players[playerIDs - 1].restartAvalibleMoves();
 			game.players[playerIDs - 1].restartAvalibleShoots();
+			if (int(game.AIPlayerGame) - 65 != game.move) {
+				if (int(game.AIPlayerGame) - 65 < 2) {
+					game.players[int(game.AIPlayerGame) - 65].AIWait = 0;
 
+				}
+			}
 			if (game.move == (playerIDs - 1))
 			{
 				game.nextPlayer();
 			}
+
 			break;
 		}
 		if (strcmp(command2, "PLACE_SHIP") == 0) {
-			game.players[playerIDs - 1].addShip(game.returnBoard(),0,game.reefs,game.reefsCount);
+			game.players[playerIDs - 1].addShip(game.returnBoard(), 0, game.reefs, game.reefsCount);
 		}
 		if (strcmp(command2, "SHOOT") == 0) {
-			if(game.extendedShips!=1){
+			if (game.extendedShips != 1) {
 				game.shoot(playerIDs);
 			}
 			else {
@@ -81,7 +84,7 @@ void playerCommands(gameSetter& game, int playerIDs) {
 			game.isThereAWinner();
 		}
 		if (strcmp(command2, "MOVE") == 0) {
-			game.players[playerIDs - 1].moveShip(game.reefs,game.reefsCount,game.returnBoard());
+			game.players[playerIDs - 1].moveShip(game.reefs, game.reefsCount, game.returnBoard());
 		}
 		if (strcmp(command2, "WYPISZ") == 0) {
 			game.players[playerIDs - 1].displayShips();
@@ -89,12 +92,12 @@ void playerCommands(gameSetter& game, int playerIDs) {
 		if (strcmp(command2, "PRINT") == 0) {
 			int visionOption;
 			cin >> visionOption;
-			game.players[playerIDs - 1].playerVisionMap(game.returnBoard(visionOption),visionOption);
+			game.players[playerIDs - 1].playerVisionMap(game.returnBoard(visionOption), visionOption);
 		}
 		if (strcmp(command2, "SPY") == 0) {
 			game.players[playerIDs - 1].addSpyPlane();
 		}
-		
+
 	}
 }
 
@@ -138,7 +141,9 @@ int main()
 			}
 			cout << endl;
 		}
-
+		if (game.AIPlayerGame != 'X'&&game.players[int(game.AIPlayerGame) - 65].AIWait == 0 && game.players[int(game.AIPlayerGame) - 65].AIPlayer == 1 && game.move == int(game.AIPlayerGame) - 65) {
+			game.AIAllLogic();
+		}
 	}
 
 	return 0;

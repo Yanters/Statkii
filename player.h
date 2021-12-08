@@ -27,7 +27,7 @@ public:
 	void displayShips();
 	void isShipAlive(int number);
 	void setUpShips();
-	void moveShip(struct cordinates reefs[]=NULL, int reefsCount=0,char **board=NULL);
+	void moveShip(struct cordinates reefs[]=NULL, int reefsCount=0,char **board=NULL,int shipID=0);
 	void restartAvalibleMoves();
 	void restartAvalibleShoots();
 	void playerVisionMap( char **boardAll=NULL,int visionOption=0);
@@ -45,13 +45,19 @@ public:
 	int AIseed = 0;
 	int AIPlayer = 0;
 	int AIError = 0;
+	int AIGeneretedShips = 0;
 	int AIShipsOwned = 0;
-	void restartShips(struct createShip shipsRestart[]);
+	int AIWait = 0;
+	int AISkipShipShoot = 0;
+
+	int AIShipID = 0;
+	void restartShips(int oldFleets[]);
 
 	//AI
-	char AIShipType[3] = { 'X','X','X' };
+	int AIShipType = -1;
 
-
+	int AIShootsCounter = 0;
+	cordinates *AIShoots = new cordinates[1000];
 	cordinates *spyPlanes = new cordinates[5];
 	createShip *ships = new createShip[10];
 };
