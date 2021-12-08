@@ -86,9 +86,6 @@ void playerCommands(gameSetter& game, int playerIDs) {
 		if (strcmp(command2, "MOVE") == 0) {
 			game.players[playerIDs - 1].moveShip(game.reefs, game.reefsCount, game.returnBoard());
 		}
-		if (strcmp(command2, "WYPISZ") == 0) {
-			game.players[playerIDs - 1].displayShips();
-		}
 		if (strcmp(command2, "PRINT") == 0) {
 			int visionOption;
 			cin >> visionOption;

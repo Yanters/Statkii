@@ -41,7 +41,6 @@ double calculateDistanceVision(int cannonY, int cannonX, int shootY, int shootX)
 }
 
 void createPlayer::addShip(char **board, int addType, struct cordinates reefs[], int reefsCount, char playerLetter) {
-	//cout << "ADDDDDING" << endl;
 	char type[4] = { 'X','X','X' };
 	int  size = 3, pointX = 0, pointY = 0, typeID = -1;
 	char direction;
@@ -71,7 +70,6 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 			break;
 		}
 		typeID = MainFleet[AIShipType] - fleet[AIShipType];
-		//cout << endl << "Type ID: " << typeID << endl;
 		switch (AIShipType)
 		{
 		case 3:
@@ -98,7 +96,6 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 			cout << "ERROR" << endl;
 			break;
 		}
-	//	cout << endl << "Losowy Statek: " << pointY << " " << pointX << " " << direction << " " << typeID << " " << type << endl;
 
 	}
 
@@ -191,18 +188,11 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 				cout << "SHIP ";
 			}
 			cout << pointY << " " << pointX << " " << direction << " " << typeID << " ";
-			/*for (int p = 0; p < 3; p++) {
-				cout << type[p];
-			}*/
 			cout << type;
-			//printf("%s", type);
 			if (addType == 1) {
 				cout << " ";
-				/*for (int k = 0; k < size; k++) {
-					cout << stateFragments[k];
-				}*/
+
 				cout << stateFragments;
-				//printf("%s", stateFragments);
 
 			}
 			cout << char(34) << ": ALL SHIPS OF THE CLASS ALREADY SET";
@@ -213,19 +203,11 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 			AIError = 1;
 		}
 	}
-	//pointX > maxRow || pointX < minRow || pointY>10 || pointY < 0||maxPointX > maxRow || maxPointX < minRow || maxPointY>10 || maxPointY < 0
-	//if( addTyp
-	if (((addType == 0||addType==3) && (pointY<minRow || pointY>maxRow || maxPointY<minRow || maxPointY>maxRow || pointX<minCol || pointX>maxCol || maxPointX<minCol || maxPointX>maxCol))) {
-		//INVALID OPERATION "PLACE_SHIP 9 6 N 0 CAR": NOT IN STARTING POSITION
+	if (((addType == 0 || addType == 3) && (pointY<minRow || pointY>maxRow || maxPointY<minRow || maxPointY>maxRow || pointX<minCol || pointX>maxCol || maxPointX<minCol || maxPointX>maxCol))) {
 		if (addType != 3)
 		{
 			cout << "INVALID OPERATION " << char(34) << "PLACE_SHIP " << pointY << " " << pointX << " " << direction << " " << typeID << " ";
-			/*for (int i = 0; i < 3; i++) {
-				cout << type[i];
-			}*/
 			cout << type;
-			//printf("%s", type);
-
 			cout << char(34) << ": NOT IN STARTING POSITION";
 			exit(0);
 		}
@@ -235,10 +217,6 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 		}
 	}
 
-	/// TEST
-
-	//cout << "RAFA I ZA BLIOSKLOP"<<endl;
-	//cout <<endl<< size<< endl;
 	int offsetY = 0, offsetX = 0;
 	for (int i = 0; i < size; i++) {
 		offsetY = 0, offsetX = 0;
@@ -255,7 +233,6 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 			offsetX = -i;
 		}
 		if (AIError != 1) {
-			//cout << "BRAK ERRORU nr: " << i << endl;
 			if (((((pointY + offsetY) >= 0) && ((pointY + offsetY) <= gameSizeY - 1)) && (((pointX + offsetX) >= 0) && ((pointX + offsetX) <= gameSizeX - 1))) && (board[pointY + offsetY][pointX + offsetX] != ' ')) {
 				if (board[pointY + offsetY][pointX + offsetX] == '#')
 				{
@@ -269,19 +246,11 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 							cout << "SHIP ";
 						}
 						cout << pointY << " " << pointX << " " << direction << " " << typeID << " ";
-						/*for (int p = 0; p < 3; p++) {
-							cout << type[p];
-						}*/
 						cout << type;
-						//printf("%s", type);
 
 						if (addType == 1) {
 							cout << " ";
-							/*for (int k = 0; k < size; k++) {
-								cout << stateFragments[k];
-							}*/
 							cout << stateFragments;
-							//printf("%s", stateFragments);
 						}
 						cout << char(34) << ": PLACING SHIP ON REEF";
 						exit(0);
@@ -345,13 +314,11 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 		}
 	}
 
-	//cout << "PO RAFIE"<<endl;
 
 	createShip ship;
 
 
 	if (AIError != 1) {
-		//cout << "WEWNATRZ FUNKCJI"<<endl;
 		fleet[size - 2]--;
 
 		int aliveParts = 0;
@@ -361,7 +328,6 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 		}
 		ship.size = size;
 
-		//segmenty
 		char *elements = new char[size];
 
 		for (int i = 0; i < size; i++) {
@@ -388,7 +354,6 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 				aliveParts++;
 			}
 		}
-		//
 		ship.pointX = pointX;
 		ship.pointY = pointY;
 		ship.typeId = typeID;
@@ -435,37 +400,28 @@ void createPlayer::addShip(char **board, int addType, struct cordinates reefs[],
 		shipsAlive++;
 		shipsOwned++;
 		ships[shipsOwned - 1] = ship;
-		
+
 	}
-	//Deleting Board
-	//if (AIPlayer != 1) {
-		for (int i = 0; i < gameSizeY; ++i) {
-			delete[] board[i];
-		}
-		delete[] board;
-	//}
-	
-	
+	for (int i = 0; i < gameSizeY; ++i) {
+		delete[] board[i];
+	}
+	delete[] board;
+
+
 	delete[] stateFragments;
 	if (AIError != 1 && AIPlayer == 1) {
 		AIShipsOwned++;
 	}
-	
+
 
 }
 
 void createPlayer::displayShips() {
 	for (int i = 0; i < shipsOwned; i++) {
 		cout << i + 1 << ". ";
-		/*for (int j = 0; j < 3; j++) {
-			cout << ships[i].type[j];
-		}*/
 		printf("%s", ships[i].type);
 
 		cout << " Size: " << ships[i].size << " Fragments: ";
-		/*for (int k = 0; k < ships[i].size; k++) {
-			cout << ships[i].pieces[k];
-		}*/
 		printf("%s", ships[i].pieces);
 
 		cout << " Direction: " << ships[i].direction << " Point Y: " << ships[i].pointY << " Point X: " << ships[i].pointX << " Fragments Alive: " << ships[i].fragmentsAlive << "Shoot: " << ships[i].cannonDestroyed << endl;
@@ -491,13 +447,13 @@ void createPlayer::setUpShips() {
 
 
 
-void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **board,int ShipID) {
+void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **board, int ShipID) {
 	char type[4] = { 'X','X','X' };
 	int typeID = -1;
 	char turnType = 'X';
 	int shipID = -1;
 
-	if(AIPlayer!=1|| AIWait == 1){
+	if (AIPlayer != 1 || AIWait == 1) {
 		cin >> typeID >> type >> turnType;
 
 
@@ -512,14 +468,14 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 				break;
 			}
 		}
-	}else if(AIWait != 1){
-		//cout << endl << "LOSOWANIEEEE " << endl;
+	}
+	else if (AIWait != 1) {
 		shipID = ShipID;
 		for (int i = 0; i < 3; i++) {
 			type[i] = ships[ShipID].type[i];
 
 		}
-		switch (rand()%3)
+		switch (rand() % 3)
 		{
 		case 0:
 			turnType = 'L';
@@ -530,18 +486,17 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		case 2:
 			turnType = 'R';
 			break;
-	
+
 		default:
 			break;
 		}
 		typeID = ships[ShipID].typeId;
 	}
 
-	//brak ruchów
 
 	if (ships[shipID].avalibleMoves == 0) {
-		if(AIPlayer != 1){
-		cout << "INVALID OPERATION " << char(34) << "MOVE " << typeID << " ";
+		if (AIPlayer != 1) {
+			cout << "INVALID OPERATION " << char(34) << "MOVE " << typeID << " ";
 			for (int i = 0; i < 3; i++) {
 				cout << type[i];
 			}
@@ -551,8 +506,6 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		}
 		else {
 			AIError = 1;
-	//		cout << "MOVED ALREADY" << endl;
-
 		}
 	}
 
@@ -570,12 +523,9 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		else
 		{
 			AIError = 1;
-			//cout << "NO MOVE" << endl;
-
 		}
 	}
 
-	// o jeden do przodu
 	int forwardY = 0, forwardX = 0;
 	int pushY = 0, pushX = 0;
 	char newDirection = 'X';
@@ -629,22 +579,14 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 	newShipY = ships[shipID].pointY + forwardY + pushY;
 	newShipX = ships[shipID].pointX + forwardX + pushX;
 
-	//OUT OF BOARD
 	if (newShipX < 0 || newShipX >= gameSizeX || newShipY < 0 || newShipY >= gameSizeY) {
 		if (AIPlayer != 1) {
 
 			cout << "INVALID OPERATION " << char(34) << "MOVE " << typeID << " " << type << " " << turnType << char(34) << ": SHIP WENT FROM BOARD";;
-			/*for (int i = 0; i < 3; i++) {
-				cout << type[i];
-			}*/
-			/*	printf("%s", type);
-				cout << " " << turnType;
-				cout << char(34) << ": SHIP WENT FROM BOARD";*/
 			exit(0);
 		}
 		else
 		{
-			//cout << "OFF BOARD" << endl;
 			AIError = 1;
 		}
 	}
@@ -669,7 +611,6 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		}
 	}
 
-	//TO CLOSE
 	int offsetY = 0, offsetX = 0;
 	for (int i = 0; i < ships[shipID].size; i++) {
 		offsetY = 0, offsetX = 0;
@@ -702,18 +643,15 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 				}
 				else
 				{
-					//cout << "ON REEF" << endl;
 					AIError = 1;
 				}
 			}
-			//int addType, int pointY, int pointX, char direction, int typeID, char type[], int size=0, char stateFragments[]=NULL, char playerLetter='X'
 			if (AIPlayer != 1) {
 				toClose(3, -1, -1, turnType, typeID, type);
 
 			}
 			else
 			{
-				//cout << "TO CLOSE" << endl;
 				AIError = 1;
 			}
 		}
@@ -725,7 +663,6 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 			}
 			else
 			{
-				//cout << "TO CLOSE" << endl;
 				AIError = 1;
 			}
 		}
@@ -737,7 +674,6 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 			}
 			else
 			{
-				//cout << "TO CLOSE" << endl;
 				AIError = 1;
 			}
 		}
@@ -748,7 +684,6 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 			}
 			else
 			{
-				//cout << "TO CLOSE" << endl;
 				AIError = 1;
 			}
 		}
@@ -760,7 +695,6 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 			else
 			{
 				AIError = 1;
-				//cout << "TO CLOSE" << endl;
 			}
 		}
 	}
@@ -768,19 +702,15 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		delete[] board[i];
 	}
 	delete[] board;
-	//FINAL SETTING
-	//cout << "AIWAIT: " << AIWait << " AIERROR: " << AIError << endl;
-	if(AIPlayer==0||(AIPlayer == 1 && AIWait == 1 && AIError == 0)){
-		//cout << endl << "ADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" << endl;
+	if (AIPlayer == 0 || (AIPlayer == 1 && AIWait == 1 && AIError == 0)) {
 		if (newDirection != 'X') {
 			ships[shipID].direction = newDirection;
 		}
 		ships[shipID].pointY = newShipY;
 		ships[shipID].pointX = newShipX;
 		ships[shipID].avalibleMoves--;
-		//cout << "RUSZANIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" << endl;
 	}
-	else if(AIPlayer==1&&AIError==0)
+	else if (AIPlayer == 1 && AIError == 0)
 	{
 		cout << "MOVE " << typeID << " ";
 		for (int i = 0; i < 3; i++) {
@@ -789,7 +719,7 @@ void createPlayer::moveShip(struct cordinates reefs[], int reefsCount, char **bo
 		cout << " " << turnType << endl;
 		AISkipShipShoot = 1;
 	}
-	
+
 }
 
 void createPlayer::restartAvalibleMoves() {
@@ -877,12 +807,10 @@ void createPlayer::addSpyPlane() {
 
 void createPlayer::playerVisionMap(char **boardAll, int visionOption) {
 
-	//Creating Board
 	char **foggyBoard = new char*[gameSizeY];
 	for (int i = 0; i < gameSizeY; ++i) {
 		foggyBoard[i] = new char[gameSizeX];
 	}
-	//Fogging board
 	for (int i = 0; i < gameSizeY; i++) {
 		for (int j = 0; j < gameSizeX; j++) {
 			foggyBoard[i][j] = '?';
@@ -927,7 +855,6 @@ void createPlayer::playerVisionMap(char **boardAll, int visionOption) {
 		}
 	}
 
-	//Display
 	if (visionOption == 1) {
 		cout << "  ";
 		for (int i = 0; i < gameSizeX; i++) {
@@ -951,4 +878,3 @@ void createPlayer::playerVisionMap(char **boardAll, int visionOption) {
 	}
 
 }
-

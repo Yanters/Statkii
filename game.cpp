@@ -24,7 +24,6 @@ void gameSetter::displayMap() {
 	int option;
 	cin >> option;
 	char **board = returnBoard(option);
-	//Displaying Board
 	if (option == 1) {
 		cout << "  ";
 		for (int i = 0; i < gameSizeX; i++) {
@@ -56,7 +55,6 @@ void gameSetter::displayMap() {
 		partsRemainingB += players[1].ships[i].fragmentsAlive;
 	}
 	cout << "PARTS REMAINING:: A : " << partsRemainingA << " B : " << partsRemainingB << endl;
-	//Deleting Board
 	for (int i = 0; i < gameSizeY; ++i) {
 		delete[] board[i];
 	}
@@ -110,10 +108,18 @@ void gameSetter::isThereAWinner() {
 void gameSetter::shoot(int playersIDs, int shipID, int fTypeId, char fType[]) {
 	int pointX, pointY;
 	cin >> pointY >> pointX;
-	//cout << "Ship Size: " << players[playersIDs - 1].ships[shipID].size << " Distance: " << calculateDistance(players[playersIDs - 1].ships[shipID].cannonY, players[playersIDs - 1].ships[shipID].cannonX, pointY, pointX) << endl;
 
 	if (pointX > gameSizeX || pointY > gameSizeY || pointY < 0 || pointX < 0) {
-		cout << "INVALID OPERATION " << char(34) << "SHOOT " << pointY << " " << pointX << char(34) << ": FIELD DOES NOT EXIST";
+		cout << "INVALID OPERATION " << char(34) << "SHOOT ";
+		if (extendedShips == 1) {
+			cout << fTypeId << " ";
+			for (int i = 0; i < 3; i++) {
+				cout << fType[i];
+			}
+			cout << " ";
+		}
+		cout << pointY << " " << pointX;
+		cout << char(34) << ": FIELD DOES NOT EXIST";
 		exit(0);
 	}
 
@@ -138,7 +144,16 @@ void gameSetter::shoot(int playersIDs, int shipID, int fTypeId, char fType[]) {
 	}
 
 	if (canShoot != 0) {
-		cout << "INVALID OPERATION " << char(34) << "SHOOT " << pointY << " " << pointX << char(34) << ": NOT ALL SHIPS PLACED";
+		cout << "INVALID OPERATION " << char(34) << "SHOOT ";
+		if (extendedShips == 1) {
+			cout << fTypeId << " ";
+			for (int i = 0; i < 3; i++) {
+				cout << fType[i];
+			}
+			cout << " ";
+		}
+		cout << pointY << " " << pointX;
+		cout << char(34) << ": NOT ALL SHIPS PLACED";
 		exit(0);
 	}
 
@@ -147,25 +162,19 @@ void gameSetter::shoot(int playersIDs, int shipID, int fTypeId, char fType[]) {
 		for (int i = 0; i < 3; i++) {
 			cout << fType[i];
 		}
-		//cout << fType;
 		cout << " " << pointY << " " << pointX;
 		cout << char(34) << ": SHIP CANNOT SHOOT";
 		exit(0);
 	}
-	/**/
-		//cout << endl << players[playersIDs - 1].ships[shipID].avalibleShoots << endl;
 	if (players[playersIDs - 1].ships[shipID].avalibleShoots == 0) {
 		cout << "INVALID OPERATION " << char(34) << "SHOOT " << fTypeId << " ";
 		for (int i = 0; i < 3; i++) {
 			cout << fType[i];
 		}
-		//cout << fType;
 		cout << " " << pointY << " " << pointX;
 		cout << char(34) << ": TOO MANY SHOOTS";
 		exit(0);
 	}
-	//cout << endl << "Cannon: " << players[playersIDs - 1].ships[shipID].cannonY << " " << players[playersIDs - 1].ships[shipID].cannonY << " Cel: " << pointY << " " << pointX << " Dystans: " << calculateDistance(players[playersIDs - 1].ships[shipID].cannonY, players[playersIDs - 1].ships[shipID].cannonX, pointY, pointX) << endl;
-	//cout << calculateDistance(players[playersIDs - 1].ships[shipID].cannonY, players[playersIDs - 1].ships[shipID].cannonX, pointY, pointX) << endl;
 	int carType = 0;
 	if (extendedShips == 1 && players[playersIDs - 1].ships[shipID].size < calculateDistance(players[playersIDs - 1].ships[shipID].cannonY, players[playersIDs - 1].ships[shipID].cannonX, pointY, pointX)) {
 		carType = 0;
@@ -173,7 +182,7 @@ void gameSetter::shoot(int playersIDs, int shipID, int fTypeId, char fType[]) {
 		if (fType[1] == 'A')carType++;
 		if (fType[2] == 'R')carType++;
 
-		if(carType!=3) tooFar(fTypeId, fType, pointY, pointX);
+		if (carType != 3) tooFar(fTypeId, fType, pointY, pointX);
 	}
 
 	for (int i = 0; i < 2; i++) {
@@ -288,7 +297,6 @@ void gameSetter::createReef() {
 void gameSetter::addShip() {
 	char playerLetter;
 	cin >> playerLetter;
-	//reefs, 
 	players[int(playerLetter) - 65].addShip(returnBoard(), 1, reefs, reefsCount, playerLetter);
 }
 
@@ -300,19 +308,15 @@ void gameSetter::setUpPlayersGameSize() {
 }
 
 char **gameSetter::returnBoard(int printType, int notIncluded) {
-	//Creating Board
-
 	char **board = new char*[gameSizeY];
 	for (int i = 0; i < gameSizeY; ++i) {
 		board[i] = new char[gameSizeX];
 	}
-	//Clearing board
 	for (int i = 0; i < gameSizeY; i++) {
 		for (int j = 0; j < gameSizeX; j++) {
 			board[i][j] = ' ';
 		}
 	}
-	//Setting values to the board
 	for (int k = 0; k < 2; k++) {
 		if (k == notIncluded) continue;
 		for (int p = 0; p < players[k].shipsOwned; p++) {
@@ -334,7 +338,6 @@ char **gameSetter::returnBoard(int printType, int notIncluded) {
 			}
 		}
 	}
-	//reefs
 
 	for (int i = 0; i < reefsCount; i++) {
 		board[reefs[i].y][reefs[i].x] = '#';
@@ -346,9 +349,6 @@ void gameSetter::shootExtended(int playerIDs) {
 	char type[4] = { 'X','X','X' };
 	int typeID = -1;
 	cin >> typeID >> type;
-
-
-
 	int shipID = -1;
 	int sameType = 0;
 	for (int i = 0; i < players[playerIDs - 1].shipsOwned; i++) {
@@ -357,20 +357,13 @@ void gameSetter::shootExtended(int playerIDs) {
 		for (int j = 0; j < 3; j++) {
 			if (players[playerIDs - 1].ships[i].type[j] == type[j]) sameType++;
 		}
-
 		if (sameType == 3) {
 			shipID = i;
 			break;
 		}
-		/*
-		if (strcmp(players[playerIDs - 1].ships[i].type, type) == 0 && players[playerIDs - 1].ships[i].typeId == typeID) {
-			shipID = i;
-			break;
-		}*/
 	}
 
 	shoot(playerIDs, shipID, typeID, type);
-
 }
 
 void gameSetter::saveGame() {
@@ -396,7 +389,6 @@ void gameSetter::saveGame() {
 						for (int q = 0; q < 3; q++) {
 							cout << players[i].ships[o].type[q];
 						}
-						//cout << players[i].ships[o].type;
 						cout << " ";
 						for (int b = 0; b < players[i].ships[o].size; b++) {
 							if (players[i].ships[o].pieces[b] != 'x') {
@@ -434,7 +426,6 @@ void gameSetter::saveGame() {
 }
 
 
-///AIAIAIAIAIIAAIIAIA
 
 void gameSetter::AIsetShips() {
 	int saveFleets[4];
@@ -464,14 +455,11 @@ void gameSetter::AIsetShips() {
 	players[int(AIPlayerGame) - 65].AIGeneretedShips = 1;
 }
 
-void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int shipSize,int AIShipID) {
-	//board
-	//Creating Board
+void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int shipSize, int AIShipID) {
 	char **foggyBoard = new char*[gameSizeY];
 	for (int i = 0; i < gameSizeY; ++i) {
 		foggyBoard[i] = new char[gameSizeX];
 	}
-	//Fogging board
 	for (int i = 0; i < gameSizeY; i++) {
 		for (int j = 0; j < gameSizeX; j++) {
 			foggyBoard[i][j] = '?';
@@ -515,17 +503,14 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 			}
 		}
 	}
-	//endofBoard
 
-	int shootY = -1, shootX = -1, noRepeat=0, fullTries=0;
-	do{
+	int shootY = -1, shootX = -1, noRepeat = 0, fullTries = 0;
+	do {
 		for (int i = 0; i < gameSizeY; i++) {
 			if (shootY != -1)break;
 			for (int j = 0; j < gameSizeX; j++) {
 				if ((foggyBoard[i][j] == '!' && calculateDistance(cannonY, cannonX, i, j) <= shipSize) || (shipSize == 5 && foggyBoard[i][j] == '!'))
 				{
-					//cout << endl << "Distance !:" << calculateDistance(cannonY, cannonX, i, j)<<" Size: "<<shipSize << endl;
-
 					shootY = i;
 					shootX = j;
 					break;
@@ -538,7 +523,6 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 				for (int j = 0; j < gameSizeX; j++) {
 					if ((foggyBoard[i][j] == '%' && calculateDistance(cannonY, cannonX, i, j) <= shipSize) || (shipSize == 5 && foggyBoard[i][j] == '%'))
 					{
-						//cout << endl << "Distance %:" << calculateDistance(cannonY, cannonX, i, j) << " Size: " << shipSize << endl;
 
 						shootY = i;
 						shootX = j;
@@ -553,7 +537,6 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 				for (int j = 0; j < gameSizeX; j++) {
 					if ((foggyBoard[i][j] == '@' && calculateDistance(cannonY, cannonX, i, j) <= shipSize) || (shipSize == 5 && foggyBoard[i][j] == '@'))
 					{
-						//cout << endl << "Distance @:" << calculateDistance(cannonY, cannonX, i, j) << " Size: " << shipSize << endl;
 
 						shootY = i;
 						shootX = j;
@@ -568,7 +551,6 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 				for (int j = 0; j < gameSizeX; j++) {
 					if ((foggyBoard[i][j] == '+' && calculateDistance(cannonY, cannonX, i, j) <= shipSize) || (shipSize == 5 && foggyBoard[i][j] == '+'))
 					{
-						//cout << endl << "Distance +:" << calculateDistance(cannonY, cannonX, i, j) << " Size: " << shipSize << endl;
 						shootY = i;
 						shootX = j;
 						break;
@@ -577,37 +559,31 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 			}
 		}
 		if (shootY == -1) {
-			//Random
-			shootY = rand() % gameSizeY;
-			shootX = rand() % gameSizeX;
-			int tries = 0;
+			shootY = rand() % players[int(AIPlayerGame) - 65].maxRow;
+			shootX = rand() % players[int(AIPlayerGame) - 65].maxCol;
+			int tries = 0, secondTries = 0;
 
 
-			while (calculateDistance(cannonY, cannonX, shootY, shootX) > shipSize || foggyBoard[shootY][shootX] != '?'&&tries <= 200) {
+			while (calculateDistance(cannonY, cannonX, shootY, shootX) > shipSize || foggyBoard[shootY][shootX] != '?'&&tries <= 2000) {
 				shootY = rand() % gameSizeY;
 				shootX = rand() % gameSizeX;
 				tries++;
-				//cout << "tries: " << tries;
 			}
 
-			if (tries >= 200) {
-				//cout << "TOOO MANY" << endl;
-				tries = 0;
-				if (tries <= 200) {
-					do {
-						players[int(AIPlayerGame) - 65].AIError = 0;
-						players[int(AIPlayerGame) - 65].moveShip(reefs, reefsCount, returnBoard(), AIShipID);
-						tries++;
-					} while (players[int(AIPlayerGame) - 65].AIError == 1 && tries <= 200);
+			if (tries >= 2000 && players[int(AIPlayerGame) - 65].AIMovedShip == 0) {
+				secondTries = 0;
+				do {
+					players[int(AIPlayerGame) - 65].AIError = 0;
+					players[int(AIPlayerGame) - 65].moveShip(reefs, reefsCount, returnBoard(), AIShipID);
+					secondTries++;
+				} while (players[int(AIPlayerGame) - 65].AIError == 1 && secondTries <= 200);
 
-					if (tries >= 200) {
-						players[int(AIPlayerGame) - 65].AISkipShipShoot = 1;
-					}
+				if (secondTries < 200) {
+					players[int(AIPlayerGame) - 65].AISkipShipShoot = 1;
+					players[int(AIPlayerGame) - 65].AIMovedShip = 1;
 				}
-				/*while (calculateDistance(cannonY, cannonX, shootY, shootX) > shipSize) {
-					shootY = rand() % gameSizeY;
-					shootX = rand() % gameSizeX;
-				}*/
+
+
 			}
 		}
 		noRepeat = 0;
@@ -620,10 +596,9 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 		}
 
 		fullTries++;
-	} while (noRepeat==1&&fullTries<=200);
-	
-	//cout << endl << "Distance ?:" << calculateDistance(cannonY, cannonX, shootY, shootX) << " Size: " << shipSize << endl;
-	if (players[int(AIPlayerGame) - 65].AISkipShipShoot != 1 && noRepeat==0) {
+	} while (noRepeat == 1 && fullTries <= 40000 && players[int(AIPlayerGame) - 65].AIMovedShip == 0);
+
+	if (players[int(AIPlayerGame) - 65].AISkipShipShoot != 1 && noRepeat == 0) {
 		cout << "SHOOT " << players[int(AIPlayerGame) - 65].ships[AIShipID].typeId << " ";
 		for (int t = 0; t < 3; t++) {
 			cout << players[int(AIPlayerGame) - 65].ships[AIShipID].type[t];
@@ -635,7 +610,7 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 
 	}
 
-	//Clearing
+
 	for (int i = 0; i < gameSizeY; ++i) {
 		delete[] boardAll[i];
 		delete[] foggyBoard[i];
@@ -647,12 +622,11 @@ void gameSetter::AISmartShootMove(char **boardAll, int cannonY, int cannonX, int
 
 void gameSetter::AIAllLogic() {
 	int shipsToPlace = 0;
-	cout << "======================AI======================"<<endl;
+	cout << "======================AI======================" << endl;
 	for (int i = 0; i < 4; i++) {
 		shipsToPlace += players[int(AIPlayerGame) - 65].fleet[i];
 	}
-	//players[int(AIPlayerGame) - 65].AIGeneretedShips == 0 &&
-	if ( players[int(AIPlayerGame) - 65].AIWait == 0)
+	if (players[int(AIPlayerGame) - 65].AIWait == 0)
 	{
 		cout << "[state]" << endl << "PRINT 0" << endl << "[state]" << endl << "[player" << AIPlayerGame << "]" << endl;
 	}
@@ -663,26 +637,25 @@ void gameSetter::AIAllLogic() {
 	}
 	else if (players[int(AIPlayerGame) - 65].AIWait == 0)
 	{
-		//SHOOT i C y x
 		for (int i = 0; i < players[int(AIPlayerGame) - 65].shipsOwned; i++) {
 			if (players[int(AIPlayerGame) - 65].ships[i].cannonDestroyed != 'Y') {
 				for (int j = 0; j < players[int(AIPlayerGame) - 65].ships[i].size; j++) {
-					if (players[int(AIPlayerGame) - 65].AISkipShipShoot != 0)break;
-					
-					
-					AISmartShootMove(returnBoard(1, (int(AIPlayerGame) - 65)) , players[int(AIPlayerGame) - 65].ships[i].cannonY, players[int(AIPlayerGame) - 65].ships[i].cannonX, players[int(AIPlayerGame) - 65].ships[i].size,i);
+					if (players[int(AIPlayerGame) - 65].AISkipShipShoot == 1) { break; }
+
+					AISmartShootMove(returnBoard(1, (int(AIPlayerGame) - 65)), players[int(AIPlayerGame) - 65].ships[i].cannonY, players[int(AIPlayerGame) - 65].ships[i].cannonX, players[int(AIPlayerGame) - 65].ships[i].size, i);
 				}
 			}
 			players[int(AIPlayerGame) - 65].AISkipShipShoot = 0;
 		}
 		cout << "[player" << AIPlayerGame << "]" << endl << "[state]" << endl << "PRINT 0" << endl << "[state]" << endl;
 	}
-	
+
 
 	players[int(AIPlayerGame) - 65].AIWait = 1;
 	players[int(AIPlayerGame) - 65].AIError = 0;
+	players[int(AIPlayerGame) - 65].AIMovedShip = 0;
+
 
 
 
 }
-

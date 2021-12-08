@@ -22,15 +22,14 @@ struct createShip {
 
 class createPlayer {
 public:
-	//, struct createReefs reefs[] = NULL
-	void addShip(char **board,int addType = 0, struct cordinates reefs[]=NULL,int reefsCount=0,char playerLetter='X');
+	void addShip(char **board, int addType = 0, struct cordinates reefs[] = NULL, int reefsCount = 0, char playerLetter = 'X');
 	void displayShips();
 	void isShipAlive(int number);
 	void setUpShips();
-	void moveShip(struct cordinates reefs[]=NULL, int reefsCount=0,char **board=NULL,int shipID=0);
+	void moveShip(struct cordinates reefs[] = NULL, int reefsCount = 0, char **board = NULL, int shipID = 0);
 	void restartAvalibleMoves();
 	void restartAvalibleShoots();
-	void playerVisionMap( char **boardAll=NULL,int visionOption=0);
+	void playerVisionMap(char **boardAll = NULL, int visionOption = 0);
 	void addSpyPlane();
 	int fleet[4] = { 4,3,2,1 };
 	int MainFleet[4] = { 4,3,2,1 };
@@ -49,11 +48,11 @@ public:
 	int AIShipsOwned = 0;
 	int AIWait = 0;
 	int AISkipShipShoot = 0;
+	int AIMovedShip = 0;
 
 	int AIShipID = 0;
 	void restartShips(int oldFleets[]);
 
-	//AI
 	int AIShipType = -1;
 
 	int AIShootsCounter = 0;
